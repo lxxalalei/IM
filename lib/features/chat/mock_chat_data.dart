@@ -1,0 +1,181 @@
+import 'package:flutter/material.dart';
+
+import 'chat_models.dart';
+
+const navItems = [
+  NavItemData(id: 'messages', label: '消息', icon: Icons.chat_bubble_rounded),
+  NavItemData(id: 'docs', label: '云文档', icon: Icons.description_rounded),
+  NavItemData(id: 'base', label: '多维表格', icon: Icons.dataset_rounded),
+  NavItemData(id: 'meetings', label: '视频会议', icon: Icons.videocam_rounded),
+  NavItemData(id: 'wiki', label: '知识库', icon: Icons.library_books_rounded),
+  NavItemData(id: 'workplace', label: '工作台', icon: Icons.apps_rounded),
+  NavItemData(id: 'contacts', label: '通讯录', icon: Icons.groups_rounded),
+  NavItemData(id: 'calendar', label: '日历', icon: Icons.calendar_month_rounded),
+  NavItemData(id: 'more', label: '更多', icon: Icons.grid_view_rounded),
+];
+
+const conversations = [
+  Conversation(
+    id: 'qianli',
+    type: ConversationType.direct,
+    title: '千里马',
+    avatarLabel: '千',
+    avatarColor: Color(0xFFE6332A),
+    lastMessage: '我接受了你的联系人申请，开始聊天吧！',
+    lastMessageTime: '4月30日',
+    tags: ['外部'],
+  ),
+  Conversation(
+    id: 'official',
+    type: ConversationType.system,
+    title: '用户602472的飞书',
+    avatarLabel: '官',
+    avatarColor: Color(0xFF4C83FF),
+    lastMessage: '飞书助手：解锁@影视飓风同款生产力...',
+    lastMessageTime: '4月28日',
+    tags: ['官方'],
+    unreadCount: 2,
+  ),
+  Conversation(
+    id: 'azhe',
+    type: ConversationType.direct,
+    title: '阿拉蕾',
+    avatarLabel: '阿',
+    avatarColor: Color(0xFFFF7043),
+    lastMessage: 'hello！有什么想聊的？',
+    lastMessageTime: '4月26日',
+    tags: ['智能体'],
+  ),
+  Conversation(
+    id: 'security',
+    type: ConversationType.bot,
+    title: '账号安全中心',
+    avatarLabel: '盾',
+    avatarColor: Color(0xFF2F80ED),
+    lastMessage: '安全登录通知',
+    lastMessageTime: '4月26日',
+    tags: ['机器人'],
+  ),
+  Conversation(
+    id: 'token',
+    type: ConversationType.bot,
+    title: '妙搭助手',
+    avatarLabel: '妙',
+    avatarColor: Color(0xFF6C63FF),
+    lastMessage: '飞书 OpenClaw 免费 Token 已到账',
+    lastMessageTime: '4月26日',
+    tags: ['机器人'],
+  ),
+  Conversation(
+    id: 'test',
+    type: ConversationType.group,
+    title: '测试',
+    avatarLabel: '测',
+    avatarColor: Color(0xFF34A853),
+    lastMessage: '用户602472：测试',
+    lastMessageTime: '4月25日',
+  ),
+  Conversation(
+    id: 'table',
+    type: ConversationType.bot,
+    title: '多维表格',
+    avatarLabel: '表',
+    avatarColor: Color(0xFF8E5CF7),
+    lastMessage: '你的职场加速器已准备好',
+    lastMessageTime: '3月19日',
+  ),
+  Conversation(
+    id: 'ai',
+    type: ConversationType.bot,
+    title: '飞书智能助手',
+    avatarLabel: '智',
+    avatarColor: Color(0xFF4DB6AC),
+    lastMessage: '@用户602472 👋 你好，欢迎使用飞书...',
+    lastMessageTime: '3月18日',
+    tags: ['机器人'],
+  ),
+  Conversation(
+    id: 'knowledge',
+    type: ConversationType.group,
+    title: '知识问答',
+    avatarLabel: '知',
+    avatarColor: Color(0xFFFF8A65),
+    lastMessage: '问个问题，或用知识写点内容',
+    lastMessageTime: '3月18日',
+  ),
+];
+
+const quickContacts = [
+  Conversation(
+    id: 'quick_qa',
+    type: ConversationType.direct,
+    title: '知识问答',
+    avatarLabel: '问',
+    avatarColor: Color(0xFFFF8A65),
+    lastMessage: '',
+    lastMessageTime: '',
+  ),
+  Conversation(
+    id: 'quick_azhe',
+    type: ConversationType.direct,
+    title: '阿拉蕾',
+    avatarLabel: '阿',
+    avatarColor: Color(0xFFFF7043),
+    lastMessage: '',
+    lastMessageTime: '',
+  ),
+  Conversation(
+    id: 'quick_me',
+    type: ConversationType.direct,
+    title: 'Arale',
+    avatarLabel: 'A',
+    avatarColor: Color(0xFFB2EBF2),
+    lastMessage: '',
+    lastMessageTime: '',
+  ),
+];
+
+const messagesByConversation = {
+  'qianli': [
+    ChatMessage(
+      id: 'system_1',
+      senderName: 'system',
+      content: '4月30日',
+      time: '',
+      isMine: false,
+      isSystem: true,
+    ),
+    ChatMessage(
+      id: 'msg_1',
+      senderName: '千里马',
+      content: '我接受了你的联系人申请，开始聊天吧！',
+      time: '14:20',
+      isMine: false,
+    ),
+  ],
+  'official': [
+    ChatMessage(
+      id: 'official_1',
+      senderName: '飞书助手',
+      content: '欢迎回来，这里会展示官方通知和产品动态。',
+      time: '09:18',
+      isMine: false,
+    ),
+  ],
+  'azhe': [
+    ChatMessage(
+      id: 'azhe_1',
+      senderName: '阿拉蕾',
+      content: 'hello！有什么想聊的？',
+      time: '16:02',
+      isMine: false,
+    ),
+    ChatMessage(
+      id: 'azhe_2',
+      senderName: '我',
+      content: '先把 IM 的桌面端骨架做起来。',
+      time: '16:05',
+      isMine: true,
+    ),
+  ],
+};
