@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'font_settings.dart';
+
 class AppColors {
   static const appBackground = Color(0xFFEEF3FA);
   static const panelBackground = Color(0xFFFFFFFF);
@@ -18,7 +20,29 @@ class AppColors {
   static const tagPurple = Color(0xFFF1E8FF);
 }
 
-ThemeData buildAppTheme() {
+ThemeData buildAppTheme({FontSettings fontSettings = const FontSettings()}) {
+  final fontFallback = fontSettings.fontFamilyFallback;
+  final textTheme = const TextTheme(
+    titleMedium: TextStyle(
+      color: AppColors.primaryText,
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
+    ),
+    bodyMedium: TextStyle(
+      color: AppColors.primaryText,
+      fontSize: 14,
+      height: 1.35,
+    ),
+    bodySmall: TextStyle(
+      color: AppColors.secondaryText,
+      fontSize: 12,
+      height: 1.35,
+    ),
+  ).apply(
+    fontFamily: fontSettings.effectiveWesternFontFamily,
+    fontFamilyFallback: fontFallback,
+  );
+
   return ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
@@ -26,28 +50,8 @@ ThemeData buildAppTheme() {
       brightness: Brightness.light,
     ),
     scaffoldBackgroundColor: AppColors.appBackground,
-    fontFamilyFallback: const [
-      'Inter',
-      'PingFang SC',
-      'Microsoft YaHei',
-      'Arial',
-    ],
-    textTheme: const TextTheme(
-      titleMedium: TextStyle(
-        color: AppColors.primaryText,
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-      ),
-      bodyMedium: TextStyle(
-        color: AppColors.primaryText,
-        fontSize: 14,
-        height: 1.35,
-      ),
-      bodySmall: TextStyle(
-        color: AppColors.secondaryText,
-        fontSize: 12,
-        height: 1.35,
-      ),
-    ),
+    fontFamily: fontSettings.effectiveWesternFontFamily,
+    fontFamilyFallback: fontFallback,
+    textTheme: textTheme,
   );
 }

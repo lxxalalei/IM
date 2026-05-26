@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>IM Font Settings Preview</title>
+    <style>
+      :root {
+        --app-bg: #eef3fa;
+        --panel: #ffffff;
+        --surface: #f7f9fc;
+        --line: #e5e8ef;
+        --text: #1f2329;
+        --secondary: #646a73;
+        --tertiary: #8f959e;
+        --brand: #3370ff;
+        --selected: #e8f0ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        background: var(--app-bg);
+        font-family: Arial, "Microsoft YaHei", "PingFang SC", sans-serif;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      .app {
+        display: grid;
+        grid-template-rows: 54px minmax(0, 1fr);
+        width: 100vw;
+        min-height: 100vh;
+      }
+
+      .topbar {
+        display: grid;
+        grid-template-columns: 68px minmax(220px, 520px) 1fr 94px;
+        align-items: center;
+        column-gap: 10px;
+        padding-right: 16px;
+      }
+
+      .search {
+        width: 100%;
+        height: 34px;
+        padding: 0 14px 0 36px;
+        color: var(--secondary);
+        background: var(--panel);
+        border: 0;
+        border-radius: 17px;
+        outline: 0;
+      }
+
+      .search-wrap {
+        position: relative;
+      }
+
+      .search-wrap::before {
+        position: absolute;
+        top: 7px;
+        left: 13px;
+        width: 14px;
+        height: 14px;
+        border: 2px solid var(--tertiary);
+        border-radius: 50%;
+        content: "";
+      }
+
+      .search-wrap::after {
+        position: absolute;
+        top: 21px;
+        left: 26px;
+        width: 7px;
+        height: 2px;
+        background: var(--tertiary);
+        border-radius: 2px;
+        transform: rotate(45deg);
+        content: "";
+      }
+
+      .top-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .icon-button {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        color: var(--secondary);
+        background: transparent;
+        border: 0;
+        border-radius: 8px;
+        cursor: default;
+      }
+
+      .main {
+        display: grid;
+        grid-template-columns: 68px minmax(0, 1fr);
+        min-height: 0;
+      }
+
+      .sidebar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 5px 10px;
+      }
+
+      .avatar {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        color: #fff;
+        background: #6dba28;
+        border-radius: 50%;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .avatar::after {
+        position: absolute;
+        right: 1px;
+        bottom: 1px;
+        width: 9px;
+        height: 9px;
+        background: #34a853;
+        border: 1.5px solid #fff;
+        border-radius: 50%;
+        content: "";
+      }
+
+      .add {
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        margin-bottom: 2px;
+        color: var(--secondary);
+        background: var(--panel);
+        border-radius: 50%;
+        font-size: 24px;
+      }
+
+      .nav {
+        display: grid;
+        width: 100%;
+        gap: 2px;
+      }
+
+      .nav-item {
+        display: grid;
+        place-items: center;
+        height: 46px;
+        color: var(--secondary);
+        border-radius: 8px;
+        font-size: 10px;
+        font-weight: 500;
+      }
+
+      .nav-item.active {
+        color: var(--brand);
+        background: var(--panel);
+        font-weight: 600;
+      }
+
+      .nav-icon {
+        width: 18px;
+        height: 18px;
+        margin-bottom: 3px;
+        border: 2px solid currentColor;
+        border-radius: 5px;
+      }
+
+      .workspace {
+        min-height: 0;
+        padding: 0 10px 10px 0;
+      }
+
+      .panel {
+        display: grid;
+        grid-template-columns: minmax(260px, 360px) minmax(420px, 1fr);
+        min-height: calc(100vh - 64px);
+        overflow: hidden;
+        background: var(--panel);
+        border-radius: 8px;
+      }
+
+      .list-pane {
+        border-right: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .pane-title {
+        height: 58px;
+        padding: 19px 18px 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .conversation {
+        display: grid;
+        grid-template-columns: 38px minmax(0, 1fr) auto;
+        gap: 10px;
+        align-items: center;
+        min-height: 64px;
+        padding: 10px 14px;
+      }
+
+      .conversation.active {
+        background: var(--selected);
+      }
+
+      .conv-avatar {
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        color: #fff;
+        background: #e6332a;
+        border-radius: 50%;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .conv-title {
+        overflow: hidden;
+        font-size: 14px;
+        font-weight: 600;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .conv-preview,
+      .conv-time {
+        color: var(--tertiary);
+        font-size: 12px;
+      }
+
+      .settings-pane {
+        display: grid;
+        align-content: start;
+        gap: 22px;
+        padding: 24px 28px 28px;
+      }
+
+      .settings-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .settings-icon {
+        display: grid;
+        place-items: center;
+        width: 22px;
+        height: 22px;
+        color: var(--brand);
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0;
+      }
+
+      .settings-form {
+        display: grid;
+        max-width: 620px;
+        gap: 16px;
+      }
+
+      label {
+        display: grid;
+        gap: 8px;
+        color: var(--secondary);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      input,
+      select {
+        width: 100%;
+        height: 44px;
+        padding: 0 12px;
+        color: var(--text);
+        background: var(--panel);
+        border: 1px solid #b8bec8;
+        border-radius: 8px;
+      }
+
+      .preview {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
+        padding: 16px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        font-size: 16px;
+        line-height: 1.45;
+      }
+
+      .reset {
+        width: 34px;
+        height: 34px;
+        margin-left: auto;
+        color: var(--secondary);
+        background: transparent;
+        border: 0;
+        border-radius: 8px;
+        font-size: 19px;
+      }
+
+      @media (max-width: 860px) {
+        .panel {
+          grid-template-columns: 1fr;
+        }
+
+        .list-pane {
+          display: none;
+        }
+
+        .topbar {
+          grid-template-columns: 68px minmax(0, 1fr) 78px;
+        }
+
+        .top-actions {
+          grid-column: 3;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div></div>
+        <div class="search-wrap">
+          <input class="search" value="搜索联系人、群聊、聊天记录" readonly />
+        </div>
+        <div></div>
+        <div class="top-actions">
+          <button class="icon-button" title="最近访问">↺</button>
+          <button class="icon-button" title="更多">•••</button>
+        </div>
+      </header>
+
+      <section class="main">
+        <aside class="sidebar">
+          <div class="avatar">A</div>
+          <div class="add">+</div>
+          <nav class="nav" aria-label="应用导航">
+            <div class="nav-item"><span class="nav-icon"></span>消息</div>
+            <div class="nav-item"><span class="nav-icon"></span>云文档</div>
+            <div class="nav-item"><span class="nav-icon"></span>会议</div>
+            <div class="nav-item"><span class="nav-icon"></span>通讯录</div>
+            <div class="nav-item active"><span class="nav-icon"></span>更多</div>
+          </nav>
+        </aside>
+
+        <section class="workspace">
+          <div class="panel">
+            <aside class="list-pane">
+              <div class="pane-title">消息</div>
+              <div class="conversation active">
+                <div class="conv-avatar">千</div>
+                <div>
+                  <div class="conv-title">千里马</div>
+                  <div class="conv-preview">我接受了你的联系人申请，开始聊天吧！</div>
+                </div>
+                <div class="conv-time">4月30日</div>
+              </div>
+              <div class="conversation">
+                <div class="conv-avatar" style="background: #4c83ff">官</div>
+                <div>
+                  <div class="conv-title">用户602472的飞书</div>
+                  <div class="conv-preview">飞书助手：解锁同款生产力...</div>
+                </div>
+                <div class="conv-time">4月28日</div>
+              </div>
+            </aside>
+
+            <section class="settings-pane">
+              <div class="settings-head">
+                <div class="settings-icon">T</div>
+                <h1>字体显示测试</h1>
+                <button id="reset" class="reset" title="重置字体">↻</button>
+              </div>
+
+              <div class="settings-form">
+                <label>
+                  中文字体
+                  <input
+                    id="chineseFont"
+                    value="Microsoft YaHei"
+                    autocomplete="off"
+                  />
+                </label>
+
+                <label>
+                  西文字体
+                  <select id="westernFont" autocomplete="off">
+                    <option>Arial</option>
+                    <option>Tahoma</option>
+                    <option>Consolas</option>
+                    <option>Segoe UI</option>
+                    <option>Verdana</option>
+                  </select>
+                </label>
+
+                <div id="preview" class="preview">
+                  <div id="chinesePreview">即时消息、通讯录、群聊、文件助手</div>
+                  <div id="westernPreview">
+                    The quick brown fox jumps over 1234567890.
+                  </div>
+                  <div id="mixedPreview">IM Chat 2026 / 工作台 / Arial</div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script>
+      const chineseInput = document.querySelector("#chineseFont");
+      const westernSelect = document.querySelector("#westernFont");
+      const resetButton = document.querySelector("#reset");
+      const chinesePreview = document.querySelector("#chinesePreview");
+      const westernPreview = document.querySelector("#westernPreview");
+      const mixedPreview = document.querySelector("#mixedPreview");
+
+      function applyFonts() {
+        const chinese = chineseInput.value.trim() || "Microsoft YaHei";
+        const western = westernSelect.value;
+        const fallback = `${western}, "${chinese}", "PingFang SC", sans-serif`;
+
+        document.body.style.fontFamily = fallback;
+        chinesePreview.style.fontFamily = `"${chinese}", ${fallback}`;
+        westernPreview.style.fontFamily = fallback;
+        mixedPreview.style.fontFamily = fallback;
+        mixedPreview.textContent = `IM Chat 2026 / 工作台 / ${western}`;
+      }
+
+      chineseInput.addEventListener("input", applyFonts);
+      westernSelect.addEventListener("change", applyFonts);
+      resetButton.addEventListener("click", () => {
+        chineseInput.value = "Microsoft YaHei";
+        westernSelect.value = "Arial";
+        applyFonts();
+      });
+      chineseInput.value = "Microsoft YaHei";
+      westernSelect.value = "Arial";
+      applyFonts();
+    </script>
+  </body>
+</html>

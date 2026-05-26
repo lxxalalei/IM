@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../../core/theme/font_settings.dart';
 import '../chat/chat_page.dart';
 import '../chat/mock_chat_data.dart';
 import '../contacts/contacts_page.dart';
+import '../settings/font_settings_page.dart';
 
 class AppShell extends StatefulWidget {
-  const AppShell({super.key});
+  const AppShell({
+    required this.fontSettings,
+    required this.onFontSettingsChanged,
+    super.key,
+  });
+
+  final FontSettings fontSettings;
+  final ValueChanged<FontSettings> onFontSettingsChanged;
 
   @override
   State<AppShell> createState() => _AppShellState();
@@ -54,6 +63,10 @@ class _AppShellState extends State<AppShell> {
                               ),
                               'contacts' => ContactsPage(
                                 searchQuery: _globalSearchQuery,
+                              ),
+                              'more' => FontSettingsPage(
+                                fontSettings: widget.fontSettings,
+                                onChanged: widget.onFontSettingsChanged,
                               ),
                               _ => ModulePlaceholder(
                                 icon: activeItem.icon,

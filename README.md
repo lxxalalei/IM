@@ -22,6 +22,28 @@ flutter pub get
 flutter run -d web-server
 ```
 
+## Windows 打包
+
+Windows `.exe` 需要在 Windows 构建环境中生成。项目提供了打包脚本：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\build_windows_release.ps1
+```
+
+离线 Windows 机器上构建时，先准备好 Flutter SDK 和 pub 缓存，然后执行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\build_windows_release.ps1 -Offline
+```
+
+打包产物会输出到：
+
+- `dist\vibe_im_windows_release\feishu_im.exe`
+- `dist\vibe_im_windows_release.zip`
+
+如果使用 GitHub Actions，可以手动运行 `Build Windows Release` workflow，并下载
+`vibe_im_windows_release` artifact。
+
 ## 后端运行
 
 后端使用 FastAPI + SQLite，数据库文件保存在本机 `backend/data/vibe_im.sqlite3`。
